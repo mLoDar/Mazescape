@@ -10,6 +10,8 @@ namespace Mazescape
     {
         private static readonly ApplicationSettings _appSettings = new();
 
+        private static char[,] _mazeLayout = new char[0, 0];
+
 
 
         static void Main()
@@ -28,12 +30,17 @@ namespace Mazescape
             int mazeHeight = ReadInputAsInteger("Enter a height for the maze:", _appSettings.maxMazeLayoutHeight);
             int mazeWidth = ReadInputAsInteger("Enter a width for the maze:", _appSettings.maxMazeLayoutWidth);
 
-            int maxCountOfObstacles = mazeHeight * mazeWidth / 100 * _appSettings.maxPercentOfObstaclesInLayout;
+            int maxCountOfObstacles = mazeHeight * mazeWidth * _appSettings.maxPercentOfObstaclesInLayout / 100;
             int obstacleCount = ReadInputAsInteger("Define the amount of obstacles:", maxCountOfObstacles);
+            
+
+
+            _mazeLayout = InitializeMazeLayout(mazeHeight, mazeWidth);
+            _mazeLayout = PlaceObstaclesInLayout(_mazeLayout, obstacleCount);
+
+
 
             Console.ForegroundColor = ConsoleColor.White;
-
-
 
             goto LabelMethodBeginning;
         }
@@ -66,6 +73,45 @@ namespace Mazescape
             }
 
             return output;
+        }
+
+        private static char[,] InitializeMazeLayout(int layoutHeight, int layoutWidth)
+        {
+            char[,] initializedLayout = new char[layoutHeight, layoutWidth];
+
+            for (int row = 0; row < initializedLayout.GetLength(0); row++)
+            {
+                for (int column = 0; column < initializedLayout.GetLength(1); column++)
+                {
+                    initializedLayout[row, column] = ' ';
+                }
+            }
+
+            return initializedLayout;
+        }
+
+        private static char[,] PlaceObstaclesInLayout(char[,] mazeLayout, int countOfObstacles)
+        {
+            Random numberGenerator = new();
+
+            int mazeLayoutWidth = mazeLayout.GetLength(1);
+            int mazeLayoutHeight = mazeLayout.GetLength(0);
+            
+            for (int i = 0; i < countOfObstacles; i++)
+            {
+            LabelCoordinatesGeneration:
+                int xCoordinate = numberGenerator.Next(0, mazeLayoutWidth);
+                int yCoordinate = numberGenerator.Next(0, mazeLayoutHeight);
+
+                if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+                {
+                    goto LabelCoordinatesGeneration;
+                }
+
+                mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutObstacleCharacter;
+            }
+
+            return mazeLayout;
         }
     }
 }
