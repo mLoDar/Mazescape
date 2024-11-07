@@ -40,7 +40,13 @@ namespace Mazescape
 
 
 
+            Console.Clear();
+            Console.SetCursorPosition(0, 4);
             Console.ForegroundColor = ConsoleColor.White;
+
+            DrawMazeLayout(_mazeLayout);
+
+
 
             goto LabelMethodBeginning;
         }
@@ -112,6 +118,49 @@ namespace Mazescape
             }
 
             return mazeLayout;
+        }
+
+        private static void DrawMazeLayout(char[,] mazeLayout)
+        {
+            int mazeLayoutHeight = mazeLayout.GetLength(0);
+            int mazeLayoutWidth = mazeLayout.GetLength(1);
+
+
+
+            Console.WriteLine($"         ┌{new string('─', mazeLayoutWidth)}┐");
+            
+            for (int row = 0; row < mazeLayoutHeight; row++)
+            {
+                Console.Write("         │");
+
+                for (int column = 0; column < mazeLayoutWidth; column++)
+                {
+                    char currentChar = mazeLayout[row, column];
+
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    if (currentChar.Equals(_appSettings.layoutCorrectPath))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+
+                    if (currentChar.Equals(_appSettings.layoutFailedPath))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+
+                    if (currentChar.Equals(_appSettings.layoutStartPoint) || currentChar.Equals(_appSettings.layoutDestination))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
+
+                    Console.Write(mazeLayout[row, column]);
+                }
+
+                Console.WriteLine("│");
+            }
+
+            Console.WriteLine($"         └{new string('─', mazeLayoutWidth)}┘");
         }
     }
 }
