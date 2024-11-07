@@ -32,12 +32,14 @@ namespace Mazescape
 
             int maxCountOfObstacles = mazeHeight * mazeWidth * _appSettings.maxPercentOfObstaclesInLayout / 100;
             int obstacleCount = ReadInputAsInteger("Define the amount of obstacles:", maxCountOfObstacles);
-            
 
 
-            _mazeLayout = InitializeMazeLayout(mazeHeight, mazeWidth);
-            _mazeLayout = PlaceObstaclesInLayout(_mazeLayout, obstacleCount);
-            _mazeLayout = PlaceStartAndEndLocation(_mazeLayout);
+
+            MazeLayout mazeLayout = new(mazeHeight, mazeWidth);
+
+            MazeLayout.Initalize();
+            MazeLayout.PlaceObstacles(obstacleCount);
+            MazeLayout.PlaceStartAndEndLocation();
 
 
 
@@ -45,9 +47,9 @@ namespace Mazescape
             Console.SetCursorPosition(0, 4);
             Console.ForegroundColor = ConsoleColor.White;
 
-            DrawMazeLayout(_mazeLayout);
+            MazeLayout.Display();
 
-
+            
 
             goto LabelMethodBeginning;
         }
@@ -80,125 +82,6 @@ namespace Mazescape
             }
 
             return output;
-        }
-
-        private static char[,] InitializeMazeLayout(int layoutHeight, int layoutWidth)
-        {
-            char[,] initializedLayout = new char[layoutHeight, layoutWidth];
-
-            for (int row = 0; row < initializedLayout.GetLength(0); row++)
-            {
-                for (int column = 0; column < initializedLayout.GetLength(1); column++)
-                {
-                    initializedLayout[row, column] = ' ';
-                }
-            }
-
-            return initializedLayout;
-        }
-
-        private static char[,] PlaceObstaclesInLayout(char[,] mazeLayout, int countOfObstacles)
-        {
-            Random numberGenerator = new();
-
-            int mazeLayoutWidth = mazeLayout.GetLength(1);
-            int mazeLayoutHeight = mazeLayout.GetLength(0);
-            
-            for (int i = 0; i < countOfObstacles; i++)
-            {
-            LabelCoordinatesGeneration:
-                int xCoordinate = numberGenerator.Next(0, mazeLayoutWidth);
-                int yCoordinate = numberGenerator.Next(0, mazeLayoutHeight);
-
-                if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
-                {
-                    goto LabelCoordinatesGeneration;
-                }
-
-                mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutObstacleCharacter;
-            }
-
-            return mazeLayout;
-        }
-
-        private static void DrawMazeLayout(char[,] mazeLayout)
-        {
-            int mazeLayoutHeight = mazeLayout.GetLength(0);
-            int mazeLayoutWidth = mazeLayout.GetLength(1);
-
-
-
-            Console.WriteLine($"         ┌{new string('─', mazeLayoutWidth)}┐");
-            
-            for (int row = 0; row < mazeLayoutHeight; row++)
-            {
-                Console.Write("         │");
-
-                for (int column = 0; column < mazeLayoutWidth; column++)
-                {
-                    char currentChar = mazeLayout[row, column];
-
-                    Console.ForegroundColor = ConsoleColor.White;
-
-                    if (currentChar.Equals(_appSettings.layoutCorrectPath))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    }
-
-                    if (currentChar.Equals(_appSettings.layoutFailedPath))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-
-                    if (currentChar.Equals(_appSettings.layoutStartPoint) || currentChar.Equals(_appSettings.layoutDestination))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                    }
-
-                    Console.Write(mazeLayout[row, column]);
-                }
-
-                Console.WriteLine("│");
-            }
-
-            Console.WriteLine($"         └{new string('─', mazeLayoutWidth)}┘");
-        }
-        
-        private static char[,] PlaceStartAndEndLocation(char[,] mazeLayout)
-        {
-            Random numberGenerator = new();
-
-
-
-        LabelGeneratingStartLocation:
-
-            int xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
-            int yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
-
-            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
-            {
-                goto LabelGeneratingStartLocation;
-            }
-
-            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutStartPoint;
-
-
-
-        LabelGeneratingEndLocation:
-
-            xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
-            yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
-
-            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
-            {
-                goto LabelGeneratingEndLocation;
-            }
-
-            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutDestination;
-
-
-
-            return mazeLayout;
         }
     }
 }
