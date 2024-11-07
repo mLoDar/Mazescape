@@ -37,6 +37,7 @@ namespace Mazescape
 
             _mazeLayout = InitializeMazeLayout(mazeHeight, mazeWidth);
             _mazeLayout = PlaceObstaclesInLayout(_mazeLayout, obstacleCount);
+            _mazeLayout = PlaceStartAndEndLocation(_mazeLayout);
 
 
 
@@ -161,6 +162,43 @@ namespace Mazescape
             }
 
             Console.WriteLine($"         └{new string('─', mazeLayoutWidth)}┘");
+        }
+        
+        private static char[,] PlaceStartAndEndLocation(char[,] mazeLayout)
+        {
+            Random numberGenerator = new();
+
+
+
+        LabelGeneratingStartLocation:
+
+            int xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
+            int yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
+
+            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+            {
+                goto LabelGeneratingStartLocation;
+            }
+
+            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutStartPoint;
+
+
+
+        LabelGeneratingEndLocation:
+
+            xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
+            yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
+
+            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+            {
+                goto LabelGeneratingEndLocation;
+            }
+
+            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutDestination;
+
+
+
+            return mazeLayout;
         }
     }
 }
