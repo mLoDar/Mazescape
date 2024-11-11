@@ -93,7 +93,19 @@ namespace Mazescape
             int mazeWidth = _mazeLayout.GetLength(1);
             int mazeHeigth = _mazeLayout.GetLength(0);
 
+            
 
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("          ┳┳┓      ┓           ");
+            Console.WriteLine("          ┃┃┃┏┓┓┏┓ ┃ ┏┓┓┏┏┓┓┏╋•");
+            Console.WriteLine("          ┛ ┗┗┻┗┗  ┗┛┗┻┗┫┗┛┗┻┗•");
+            Console.WriteLine("                        ┛      ");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("        ────────────────────────────");
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
 
             Console.WriteLine($"         ┌{new string('─', mazeWidth)}┐");
 
@@ -119,7 +131,7 @@ namespace Mazescape
 
                     if (currentChar.Equals(_appSettings.layoutStartPoint) || currentChar.Equals(_appSettings.layoutDestination))
                     {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                     }
 
                     Console.Write(_mazeLayout[row, column]);
