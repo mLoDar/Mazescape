@@ -34,7 +34,7 @@ namespace Mazescape
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("│");
             Console.WriteLine("        ┌────────────────────┘");
-
+            Console.WriteLine("        │ Controls: Arrow keys and ENTER");
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
