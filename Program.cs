@@ -18,6 +18,7 @@ namespace Mazescape
 
             Console.Title = "Mazescape";
             Console.OutputEncoding = Encoding.UTF8;
+            Console.CursorVisible = false;
 
             Console.Clear();
             Console.SetCursorPosition(0, 4);
@@ -45,32 +46,41 @@ namespace Mazescape
 
             int maxCountOfObstacles = mazeHeight * mazeWidth * _appSettings.maxPercentOfObstaclesInLayout / 100;
             int obstacleCount = ReadInputAsInteger("Define the amount of obstacles:", maxCountOfObstacles / 3, maxCountOfObstacles);
-            
-
-
-            MazeLayout mazeLayout = new(mazeHeight, mazeWidth);
-
-            MazeLayout.Initalize();
-            MazeLayout.PlaceObstacles(obstacleCount);
-            MazeLayout.PlaceStartAndEndLocation();
 
 
 
             Console.Clear();
             Console.SetCursorPosition(0, 4);
-            Console.ForegroundColor = ConsoleColor.White;
-
-            MazeLayout.Display();
 
 
+
+            Maze currentMaze = new(mazeHeight, mazeWidth);
+
+            currentMaze.Initalize();
+            currentMaze.PlaceObstacles(obstacleCount);
+            currentMaze.PlaceStartAndEndLocation();
+
+            Pathfinder pathfinder = new();
+            currentMaze = pathfinder.Search(currentMaze);
+
+
+
+            Console.WriteLine();
+            Console.WriteLine($"{(currentMaze.pathfindingWasSuccessful ? "        A path was found, hurray :)" : "        Sadly there was no path found :(")}");
+            Console.WriteLine("        Press any key to continue, or ESC to exit ...");
+
+
+
+            if (Console.ReadKey().Key.Equals(ConsoleKey.Escape))
+            {
+                Environment.Exit(0);
+            }
 
             goto LabelMethodBeginning;
         }
 
         private static int ReadInputAsInteger(string inputPrompt, int presetInput, int maxInput)
         {
-            Console.CursorVisible = false;
-            
             int chosenInput = presetInput;
             bool inputAdjusted = false;
 
@@ -90,7 +100,7 @@ namespace Mazescape
                     case (char)ConsoleKey.UpArrow:
                         if (chosenInput + 1 <= maxInput)
                         {
-                            chosenInput = chosenInput + 1;
+                            chosenInput++;
                         }
                         Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 2);
                         Console.WriteLine(new string(' ', Console.BufferWidth));
@@ -101,7 +111,7 @@ namespace Mazescape
                     case (char)ConsoleKey.DownArrow:
                         if (chosenInput - 1 >= 5)
                         {
-                            chosenInput = chosenInput - 1;
+                            chosenInput--;
                         }
                         Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 2);
                         Console.WriteLine(new string(' ', Console.BufferWidth));
@@ -126,8 +136,6 @@ namespace Mazescape
                         break;
                 }
             }
-
-            Console.CursorVisible = true;
 
             return chosenInput;
         }

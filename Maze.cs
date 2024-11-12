@@ -6,30 +6,32 @@
 
 namespace Mazescape
 {
-    internal class MazeLayout
+    internal class Maze
     {
         private static readonly ApplicationSettings _appSettings = new();
 
-        private static char[,] _mazeLayout = new char[0, 0];
-        private static Point startLocation = new(0, 0);
-        private static Point endLocation = new(0, 0);
+        internal char[,] mazeLayout = new char[0, 0];
+        internal Point startLocation = new(0, 0);
+        internal Point endLocation = new(0, 0);
+
+        internal bool pathfindingWasSuccessful = false;
 
         private static readonly Random numberGenerator = new();
 
         
 
-        public MazeLayout(int mazeHeight, int mazeWidth)
+        public Maze(int mazeHeight, int mazeWidth)
         {
-            _mazeLayout = new char[mazeHeight, mazeWidth];
+            mazeLayout = new char[mazeHeight, mazeWidth];
         }
 
-        internal static void Initalize()
+        internal void Initalize()
         {
-            for (int row = 0; row < _mazeLayout.GetLength(0); row++)
+            for (int row = 0; row < mazeLayout.GetLength(0); row++)
             {
-                for (int column = 0; column < _mazeLayout.GetLength(1); column++)
+                for (int column = 0; column < mazeLayout.GetLength(1); column++)
                 {
-                    _mazeLayout[row, column] = ' ';
+                    mazeLayout[row, column] = ' ';
                 }
             }
 
@@ -37,10 +39,10 @@ namespace Mazescape
             endLocation = new(0, 0);
         }
 
-        internal static void PlaceObstacles(int countOfObstacles)
+        internal void PlaceObstacles(int countOfObstacles)
         {
-            int mazeWidth = _mazeLayout.GetLength(1);
-            int mazeHeigth = _mazeLayout.GetLength(0);
+            int mazeWidth = mazeLayout.GetLength(1);
+            int mazeHeigth = mazeLayout.GetLength(0);
 
             for (int i = 0; i < countOfObstacles; i++)
             {
@@ -48,50 +50,50 @@ namespace Mazescape
                 int xCoordinate = numberGenerator.Next(0, mazeWidth);
                 int yCoordinate = numberGenerator.Next(0, mazeHeigth);
 
-                if (_mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+                if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacle))
                 {
                     goto LabelCoordinatesGeneration;
                 }
 
-                _mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutObstacleCharacter;
+                mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutObstacle;
             }
         }
 
-        internal static void PlaceStartAndEndLocation()
+        internal void PlaceStartAndEndLocation()
         {
         LabelGeneratingStartLocation:
 
-            int xCoordinate = numberGenerator.Next(0, _mazeLayout.GetLength(1));
-            int yCoordinate = numberGenerator.Next(0, _mazeLayout.GetLength(0));
+            int xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
+            int yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
 
-            if (_mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacle))
             {
                 goto LabelGeneratingStartLocation;
             }
 
-            _mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutStartPoint;
+            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutEscapee;
             startLocation = new Point(xCoordinate, yCoordinate);
 
 
 
         LabelGeneratingEndLocation:
 
-            xCoordinate = numberGenerator.Next(0, _mazeLayout.GetLength(1));
-            yCoordinate = numberGenerator.Next(0, _mazeLayout.GetLength(0));
+            xCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(1));
+            yCoordinate = numberGenerator.Next(0, mazeLayout.GetLength(0));
 
-            if (_mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacleCharacter))
+            if (mazeLayout[yCoordinate, xCoordinate].Equals(_appSettings.layoutObstacle))
             {
                 goto LabelGeneratingEndLocation;
             }
 
-            _mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutDestination;
+            mazeLayout[yCoordinate, xCoordinate] = _appSettings.layoutDestination;
             endLocation = new Point(xCoordinate, yCoordinate);
         }
 
-        internal static void Display()
+        internal void Display()
         {
-            int mazeWidth = _mazeLayout.GetLength(1);
-            int mazeHeigth = _mazeLayout.GetLength(0);
+            int mazeWidth = mazeLayout.GetLength(1);
+            int mazeHeigth = mazeLayout.GetLength(0);
 
             
 
@@ -115,7 +117,7 @@ namespace Mazescape
 
                 for (int column = 0; column < mazeWidth; column++)
                 {
-                    char currentChar = _mazeLayout[row, column];
+                    char currentChar = mazeLayout[row, column];
 
                     Console.ForegroundColor = ConsoleColor.White;
 
@@ -129,12 +131,14 @@ namespace Mazescape
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
 
-                    if (currentChar.Equals(_appSettings.layoutStartPoint) || currentChar.Equals(_appSettings.layoutDestination))
+                    if (currentChar.Equals(_appSettings.layoutEscapee) || currentChar.Equals(_appSettings.layoutDestination))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                     }
 
-                    Console.Write(_mazeLayout[row, column]);
+                    Console.Write(mazeLayout[row, column]);
+
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
 
                 Console.WriteLine("│");
