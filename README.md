@@ -10,6 +10,9 @@ Maze-Escape is a project for testing the use of recursive methods and creating a
 
 ---
 
+## Other services used
+- This [website](https://patorjk.com/software/taag/#p=display&f=Tmplr) was used for creating headers within the application.
+
 ## How it Works
 
 - User of the application enters a height and width of the maze.
@@ -23,7 +26,7 @@ Maze-Escape is a project for testing the use of recursive methods and creating a
 - '**?**' -> obstacle
 - '**?**' -> failed path
 - '**?**' -> successful path
-- '**•**' -> Start location
+- '**â€¢**' -> Start location
 - '**X**' -> Destination
 
 ## How to Run
