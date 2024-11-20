@@ -23,9 +23,9 @@ Maze-Escape is a project for testing the use of recursive methods and creating a
 
 ## Default layout characters
 - ' ' -> empty space
-- '**?**' -> obstacle
-- '**?**' -> failed path
-- '**?**' -> successful path
+- '**□**' -> obstacle
+- '**░**' -> failed path
+- '**▓**' -> successful path
 - '**•**' -> Start location
 - '**X**' -> Destination
 
