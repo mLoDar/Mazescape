@@ -11,7 +11,7 @@ Maze-Escape is a project for testing the use of recursive methods and creating a
 ---
 
 ## Other services used
-- This [website](https://patorjk.com/software/taag/#p=display&f=Tmplr) was used for creating headers within the application.
+- The website [patorjk.com](https://patorjk.com/software/taag/#p=display&f=Tmplr) was used for creating headers within the application.
 
 ## How it Works
 
