@@ -47,11 +47,6 @@ Maze-Escape is a project for testing the use of recursive methods and creating a
     <img style='height: 90%; width: 90%;' alt="mazeLayout" src="readme-files/mazeLayout.PNG"/>
 </p>
 
-## Future Improvements
-
-- [ ] Improve current path finding algorithm
-- [ ] Add new algorithm to find a faster/shorter path
-   
 ---
 
 <p align="center">
