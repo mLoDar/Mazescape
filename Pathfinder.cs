@@ -93,9 +93,9 @@ namespace Mazescape
             return false;
         }
 
-        private static bool ArrayHasChar(char[,] inputArray, int xCoordinate, int yCoordinate, char charaterToLookFor)
+        private static bool ArrayHasChar(char[,] inputArray, int xCoordinate, int yCoordinate, char characterToLookFor)
         {
-            if (inputArray[yCoordinate, xCoordinate].Equals(charaterToLookFor))
+            if (inputArray[yCoordinate, xCoordinate].Equals(characterToLookFor))
             {
                 return true;
             }
